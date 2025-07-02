@@ -12,11 +12,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateBooksMutation } from "@/redux/api/baseApi";
+import { useNavigate } from "react-router";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
   author: z.string().min(1, "Author is required"),
-  genre: z.string().min(1, "Genre is required"),
+  genre: z.enum(
+    ["FICTION", "NON_FICTION", "SCIENCE", "HISTORY", "BIOGRAPHY", "FANTASY"],
+    {
+      required_error: "Genre is required",
+    }
+  ),
   isbn: z.string().min(1, "ISBN is required"),
   description: z.string().min(1, "Description is required"),
   copies: z.number().min(1, "Copies must be at least 1"),
@@ -25,12 +39,15 @@ const bookSchema = z.object({
 type BookFormValues = z.infer<typeof bookSchema>;
 
 const AddBook = () => {
+  const [createBook, { isLoading }] = useCreateBooksMutation();
+  const navigate = useNavigate();
+
   const form = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
     defaultValues: {
       title: "",
       author: "",
-      genre: "",
+      genre: undefined,
       isbn: "",
       description: "",
       copies: 1,
@@ -39,9 +56,14 @@ const AddBook = () => {
 
   const onSubmit = (data: BookFormValues) => {
     const bookData = { ...data, available: true };
-    console.log("Submitted book:", bookData);
-    // send data to backend here
+    createBook(bookData);
+    form.reset();
+    navigate("/");
   };
+
+  if (isLoading) {
+    return <h2 className="text-center mt-4">Loading....</h2>;
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 mt-4">
@@ -89,9 +111,24 @@ const AddBook = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Genre</FormLabel>
-                  <FormControl>
-                    <Input placeholder="SCIENCE" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select Genre" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="FICTION">FICTION</SelectItem>
+                      <SelectItem value="NON_FICTION">NON_FICTION</SelectItem>
+                      <SelectItem value="SCIENCE">SCIENCE</SelectItem>
+                      <SelectItem value="HISTORY">HISTORY</SelectItem>
+                      <SelectItem value="BIOGRAPHY">BIOGRAPHY</SelectItem>
+                      <SelectItem value="FANTASY">FANTASY</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

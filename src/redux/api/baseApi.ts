@@ -12,10 +12,10 @@ export const baseApi = createApi({
       providesTags: ["book"],
     }),
     createBooks: builder.mutation({
-      query: (taskData) => ({
-        url: "/tasks",
+      query: (bookData) => ({
+        url: "/books",
         method: "POST",
-        body: taskData,
+        body: bookData,
       }),
       invalidatesTags: ["book"],
     }),
