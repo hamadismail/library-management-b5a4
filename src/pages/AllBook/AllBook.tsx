@@ -8,12 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTasksQuery } from "@/redux/api/baseApi";
+import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/redux/types";
 import { Eye, SquarePen, Trash } from "lucide-react";
 
 const AllBook = () => {
-  const { data, isLoading, isError } = useGetTasksQuery(undefined, {
+  const { data, isLoading } = useGetBooksQuery(undefined, {
     pollingInterval: 30000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -21,7 +21,7 @@ const AllBook = () => {
   });
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <h2 className="text-center mt-8">Loading...</h2>;
   }
 
   return (
