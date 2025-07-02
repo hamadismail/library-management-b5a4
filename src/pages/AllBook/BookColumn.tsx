@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useDeleteBooksMutation } from "@/redux/api/baseApi";
-import { Eye, Loader2, SquarePen, Trash } from "lucide-react";
+import { Eye, Loader2, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import UpdateBook from "../UpdateBook/UpdateBook";
 
 const BookColumn = ({ book, idx }: any) => {
   const [open, setOpen] = useState(false);
@@ -44,7 +45,10 @@ const BookColumn = ({ book, idx }: any) => {
       </TableCell>
       <TableCell className="flex gap-2 items-center justify-center">
         <Eye className="text-blue-600 cursor-pointer" />
-        <SquarePen className="text-green-600 cursor-pointer" />
+
+          <UpdateBook book={book} />
+
+
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger>
             <Trash className="text-red-600 cursor-pointer" />
