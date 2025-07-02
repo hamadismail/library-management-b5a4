@@ -1,16 +1,14 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { useGetBooksQuery } from "@/redux/api/baseApi";
 import type { IBook } from "@/redux/types";
-import { Eye, SquarePen, Trash } from "lucide-react";
+import BookColumn from "./BookColumn";
 
 const AllBook = () => {
   const { data, isLoading } = useGetBooksQuery(undefined, {
@@ -43,28 +41,7 @@ const AllBook = () => {
         <TableBody>
           {!isLoading &&
             data.data.map((book: IBook, idx: number) => (
-              <TableRow className={`${idx%2 ? 'bg-blend-color' : 'bg-accent'}`} key={book._id}>
-                <TableCell>{book.title}</TableCell>
-                <TableCell>{book.author}</TableCell>
-                <TableCell>{book.genre}</TableCell>
-                <TableCell>{book.isbn}</TableCell>
-                <TableCell>{book.copies}</TableCell>
-                <TableCell>
-                  {book.available ? (
-                    <span className="text-green-600">Available</span>
-                  ) : (
-                    <span className="text-red-600">Not Available</span>
-                  )}
-                </TableCell>
-                <TableCell className="flex gap-2 items-center justify-center">
-                  <Eye className="text-blue-600 cursor-pointer" />
-                  <SquarePen className="text-green-600 cursor-pointer" />
-                  <Trash className="text-red-600 cursor-pointer" />
-                </TableCell>
-                <TableCell className="text-center">
-                  <Button className="cursor-pointer">Borrow</Button>
-                </TableCell>
-              </TableRow>
+              <BookColumn key={idx} book={book} idx={idx}/>
             ))}
         </TableBody>
       </Table>

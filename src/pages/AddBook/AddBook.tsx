@@ -21,6 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -59,11 +61,8 @@ const AddBook = () => {
     createBook(bookData);
     form.reset();
     navigate("/");
+    toast.success("New Book Added Successfully!");
   };
-
-  if (isLoading) {
-    return <h2 className="text-center mt-4">Loading....</h2>;
-  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 mt-4">
@@ -152,7 +151,7 @@ const AddBook = () => {
               control={form.control}
               name="copies"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="md:col-span-2">
                   <FormLabel>Copies</FormLabel>
                   <FormControl>
                     <Input
@@ -185,7 +184,11 @@ const AddBook = () => {
             />
 
             <Button type="submit" className="w-full md:col-span-2">
-              Submit
+              {isLoading ? (
+                <Loader2 className="animate-spin w-4 h-4 mr-2" />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </form>
         </Form>
