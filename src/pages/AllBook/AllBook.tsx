@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,6 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetTasksQuery } from "@/redux/api/baseApi";
+import type { IBook } from "@/redux/types";
+import { Eye, SquarePen, Trash } from "lucide-react";
 
 const AllBook = () => {
   const { data, isLoading, isError } = useGetTasksQuery(undefined, {
@@ -16,8 +19,6 @@ const AllBook = () => {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-
-  console.log(data);
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -35,19 +36,36 @@ const AllBook = () => {
             <TableHead>ISBN</TableHead>
             <TableHead>Copies</TableHead>
             <TableHead>Availability</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="text-center">Actions</TableHead>
+            <TableHead className="text-center">Make Borrow</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell>INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell>$250.00</TableCell>
-            <TableCell>$250.00</TableCell>
-            <TableCell>$250.00</TableCell>
-            <TableCell>$250.00</TableCell>
-          </TableRow>
+          {!isLoading &&
+            data.data.map((book: IBook, idx: number) => (
+              <TableRow className={`${idx%2 ? 'bg-blend-color' : 'bg-accent'}`} key={book._id}>
+                <TableCell>{book.title}</TableCell>
+                <TableCell>{book.author}</TableCell>
+                <TableCell>{book.genre}</TableCell>
+                <TableCell>{book.isbn}</TableCell>
+                <TableCell>{book.copies}</TableCell>
+                <TableCell>
+                  {book.available ? (
+                    <span className="text-green-600">Available</span>
+                  ) : (
+                    <span className="text-red-600">Not Available</span>
+                  )}
+                </TableCell>
+                <TableCell className="flex gap-2 items-center justify-center">
+                  <Eye className="text-blue-600 cursor-pointer" />
+                  <SquarePen className="text-green-600 cursor-pointer" />
+                  <Trash className="text-red-600 cursor-pointer" />
+                </TableCell>
+                <TableCell className="text-center">
+                  <Button className="cursor-pointer">Borrow</Button>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>
