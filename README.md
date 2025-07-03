@@ -3,7 +3,7 @@
 A full-stack Library Management web application that allows users to add, view, update, and borrow books with proper validation, availability tracking, and smooth UI interactions. Built with React, Redux Toolkit Query, Tailwind CSS (shadcn/ui), Node.js, Express, and MongoDB.
 
 ## 🌐 Live Demo
-👉 [Click here to view the live project](https://your-deployment-url.com)
+👉 [librarymanagementb5a4.netlify.app/](https://librarymanagementb5a4.netlify.app/)
 
 ## 🚀 Features
 
