@@ -41,7 +41,7 @@ const bookSchema = z.object({
 type BookFormValues = z.infer<typeof bookSchema>;
 
 const AddBook = () => {
-  const [createBook, { isLoading, isSuccess, isError }] =
+  const [createBook, { isLoading }] =
     useCreateBooksMutation();
   const navigate = useNavigate();
 

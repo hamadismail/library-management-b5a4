@@ -36,7 +36,6 @@ import { useNavigate } from "react-router";
 import { z } from "zod";
 
 const borrowSchema = z.object({
-  book: z.string(),
   quantity: z.number().min(1, "Quantity must be at least 1"),
   dueDate: z.date({
     required_error: "Due date is required",
@@ -53,7 +52,6 @@ const BorrowBook = ({ book }: any) => {
   const form = useForm<BorrowFormValues>({
     resolver: zodResolver(borrowSchema),
     defaultValues: {
-      book: book?._id || "",
       quantity: 1,
       dueDate: new Date(),
     },
@@ -65,7 +63,8 @@ const BorrowBook = ({ book }: any) => {
       return;
     }
 
-    borrowBook(data);
+    const borrowData = { ...data, book: book._id };
+    borrowBook(borrowData);
     setOpen(false);
 
     navigate("/borrow-summary");
@@ -89,20 +88,6 @@ const BorrowBook = ({ book }: any) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="gap-4 grid md:grid-cols-2"
           >
-            <FormField
-              control={form.control}
-              name="book"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Book</FormLabel>
-                  <FormControl>
-                    <Input {...field} readOnly disabled />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="quantity"

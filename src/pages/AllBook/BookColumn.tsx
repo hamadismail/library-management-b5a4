@@ -16,10 +16,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import UpdateBook from "../UpdateBook/UpdateBook";
 import BorrowBook from "../BorrowSummary/BorrowBook";
+import { useNavigate } from "react-router";
 
 const BookColumn = ({ book, idx }: any) => {
   const [open, setOpen] = useState(false);
   const [deleteBook, { isLoading }] = useDeleteBooksMutation();
+  const navigate = useNavigate();
 
   const handleDelete = (id: string) => {
     deleteBook(id).unwrap();
@@ -45,8 +47,8 @@ const BookColumn = ({ book, idx }: any) => {
         )}
       </TableCell>
       <TableCell className="flex gap-2 items-center justify-center">
-        <Eye className="text-blue-600 cursor-pointer" />
-          <UpdateBook book={book} />
+        <Eye onClick={() => navigate(`/books/${book._id}`)} className="text-blue-600 cursor-pointer" />
+        <UpdateBook book={book} />
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger>
             <Trash className="text-red-600 cursor-pointer" />

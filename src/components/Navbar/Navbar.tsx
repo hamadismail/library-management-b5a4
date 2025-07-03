@@ -5,7 +5,7 @@ import "./navbar.css";
 const Navbar = () => {
   const links = (
     <>
-      <NavLink to="/books" className="hover:text-primary transition-colors">
+      <NavLink to="/" className="hover:text-primary transition-colors">
         All Books
       </NavLink>
       <NavLink to="/create-book" className="hover:text-primary transition-colors">
