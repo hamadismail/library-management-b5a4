@@ -41,7 +41,8 @@ const bookSchema = z.object({
 type BookFormValues = z.infer<typeof bookSchema>;
 
 const AddBook = () => {
-  const [createBook, { isLoading }] = useCreateBooksMutation();
+  const [createBook, { isLoading, isSuccess, isError }] =
+    useCreateBooksMutation();
   const navigate = useNavigate();
 
   const form = useForm<BookFormValues>({
@@ -56,12 +57,18 @@ const AddBook = () => {
     },
   });
 
-  const onSubmit = (data: BookFormValues) => {
+  const onSubmit = async (data: BookFormValues) => {
     const bookData = { ...data, available: true };
-    createBook(bookData);
-    form.reset();
-    navigate("/");
-    toast.success("New Book Added Successfully!");
+    try {
+      await createBook(bookData).unwrap();
+      toast.success("New Book Added Successfully!");
+      form.reset();
+      navigate("/");
+    } catch (err: any) {
+      if (err.status === 400) {
+        toast.error("ISBN is already Exists");
+      }
+    }
   };
 
   return (

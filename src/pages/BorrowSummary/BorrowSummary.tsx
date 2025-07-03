@@ -1,9 +1,23 @@
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useGetBookSummaryQuery } from "@/redux/api/baseApi";
 import type { IBorrow } from "@/redux/types";
 
 const BorrowSummary = () => {
-  const { data, isLoading } = useGetBookSummaryQuery(undefined);
+  const { data, isLoading } = useGetBookSummaryQuery(undefined, {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
   if (isLoading) {
     return <h2 className="text-center mt-8">Loading...</h2>;
   }

@@ -5,7 +5,7 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://library-management-server-kohl.vercel.app/api",
   }),
-  tagTypes: ["book"],
+  tagTypes: ["book", "borrow"],
   endpoints: (builder) => ({
     getBooks: builder.query({
       query: () => "/books",
@@ -36,6 +36,15 @@ export const baseApi = createApi({
     }),
     getBookSummary: builder.query({
       query: () => "/borrow",
+      providesTags: ["borrow"],
+    }),
+    borrowBooks: builder.mutation({
+      query: (borrowData) => ({
+        url: "/borrow",
+        method: "POST",
+        body: borrowData,
+      }),
+      invalidatesTags: ["borrow"],
     }),
   }),
 });
@@ -46,4 +55,5 @@ export const {
   useUpdateBookMutation,
   useDeleteBooksMutation,
   useGetBookSummaryQuery,
+  useBorrowBooksMutation,
 } = baseApi;

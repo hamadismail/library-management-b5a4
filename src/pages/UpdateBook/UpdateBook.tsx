@@ -84,8 +84,7 @@ const UpdateBook = ({ book }: any) => {
         <DialogHeader>
           <DialogTitle>Are you sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your book
-            and remove your data from our servers.
+            To Update This Book.
           </DialogDescription>
         </DialogHeader>
 
